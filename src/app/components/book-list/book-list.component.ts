@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { BookService } from '../../services/book.service';
 
 interface Book {
   id: number;
@@ -11,14 +13,20 @@ interface Book {
 
 @Component({
   selector: 'app-book-list',
-  imports: [RouterLink, CommonModule],
+  standalone: true, // Declare as a standalone component
+  imports: [RouterLink, CommonModule, HttpClientModule],
   templateUrl: './book-list.component.html',
-  styleUrl: './book-list.component.css',
+  styleUrls: ['./book-list.component.css'], // Corrected `styleUrls`
 })
-export class BookListComponent {
-  books: Book[] = [
-    { id: 1, title: 'Angular for Beginners', author: 'John Doe', year: 2020 },
-    { id: 2, title: 'Mastering Angular', author: 'Jane Smith', year: 2021 },
-    { id: 3, title: 'Advanced Angular', author: 'Chris Lee', year: 2022 },
-  ];
+export class BookListComponent implements OnInit {
+  books: Book[] = []; // Use the `Book` interface for type safety
+
+  constructor(private bookService: BookService) {}
+
+  ngOnInit(): void {
+    // Fetch books from the service
+    this.bookService.getBooks().subscribe((data: Book[]) => {
+      this.books = data;
+    });
+  }
 }

@@ -1,29 +1,16 @@
-<div class="min-h-screen bg-gray-100 p-8">
-  <h1 class="text-3xl font-bold mb-8 text-center">Book Library</h1>
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div
-      *ngFor="let book of books"
-      class="bg-white rounded-lg shadow-lg overflow-hidden"
-    >
-      <div class="p-6">
-        <h2 class="text-xl font-semibold text-gray-800">{{ book.title }}</h2>
-        <p class="text-gray-600">by {{ book.author }}</p>
-        <p class="text-gray-500">Year: {{ book.year }}</p>
-      </div>
-      <div class="bg-gray-100 p-4 flex justify-between">
-        <a
-          [routerLink]="['/books/details', book.id]"
-          class="text-blue-500 hover:text-blue-700"
-        >
-          View Details
-        </a>
-        <a
-          [routerLink]="['/books/edit', book.id]"
-          class="text-yellow-500 hover:text-yellow-700"
-        >
-          Edit
-        </a>
-      </div>
+<div class="container mx-auto p-4">
+  <h1 class="text-xl font-bold mb-4">Book List</h1>
+
+  <div *ngIf="books.length > 0; else noBooks">
+    <div *ngFor="let book of books" class="p-4 border rounded shadow mb-4">
+      <h2 class="text-lg font-semibold">{{ book.title }}</h2>
+      <p>Author: {{ book.author }}</p>
+      <p>Year: {{ book.year }}</p>
+      <a [routerLink]="['/books/details', book.id]" class="text-blue-500">View Details</a>
     </div>
   </div>
+
+  <ng-template #noBooks>
+    <p class="text-gray-500">No books available.</p>
+  </ng-template>
 </div>
